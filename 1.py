@@ -15,17 +15,28 @@ class MyWidget(QMainWindow):
         self.s = 0.005
         self.get.clicked.connect(self.nmap)
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Up:
+            if self.s < 0.01:
+                self.s += 0.001
+                self.nmap()
+        if event.key() == Qt.Key_Down:
+            if self.s > 0.001:
+                self.s -= 0.001
+                self.nmap()
+        self.get.clicked.connect(self.nmap)
+
     def nmap(self):
         x = self.x.text()
         y = self.y.text()
         print(x, y)
         x = str(x)
         y = str(y)
+        s = self.s
         if y == '' or x == '':
             x = '37.530883'
             y = '55.702999'
-        map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn=0.005,0.005'
-        print(map_req)
+        map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn={s},{s}'
         resp = requests.get(map_req)
 
         if not resp:
