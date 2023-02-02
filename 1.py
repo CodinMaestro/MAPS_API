@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 import requests
 import os
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 
 
 class MyWidget(QMainWindow):
@@ -12,6 +13,16 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('map.ui', self)
         self.nmap()
+        self.size = 0.005
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Up:
+            if self.size < 0.01:
+                self.size += 0.001
+        if event.key() == Qt.Key_Down:
+            if self.size > 0.001:
+                self.size -= 0.001
+        self.mmap()
 
     def nmap(self):
         map_req = 'http://static-maps.yandex.ru/1.x/?ll=37.530883,55.702999&l=sat&spn=0.005,0.005'
