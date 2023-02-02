@@ -24,7 +24,7 @@ class MyWidget(QMainWindow):
         if y == '' or x == '':
             x = '37.530883'
             y = '55.702999'
-        map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=sat&spn=0.005,0.005'
+        map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn=0.005,0.005'
         print(map_req)
         resp = requests.get(map_req)
 
