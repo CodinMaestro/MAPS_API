@@ -14,22 +14,23 @@ class MyWidget(QMainWindow):
         uic.loadUi('map.ui', self)
         self.s = 0.005
         self.get.clicked.connect(self.nmap)
+        self.X = 0.004
+        self.nx = 1
+        self.ny = 1
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Up:
-            if self.s < 0.01:
-                self.s += 0.001
+        if event.key() == Qt.Key_PageUp:
+            if self.s - self.X > 0.000:
+                self.s -= self.X
                 self.nmap()
-        if event.key() == Qt.Key_Down:
-            if self.s > 0.001:
-                self.s -= 0.001
+        if event.key() == Qt.Key_PageDown:
+            if self.s + self.X < 79.995:
+                self.s += self.X
                 self.nmap()
-        self.get.clicked.connect(self.nmap)
 
     def nmap(self):
         x = self.x.text()
         y = self.y.text()
-        print(x, y)
         x = str(x)
         y = str(y)
         s = self.s
@@ -38,17 +39,15 @@ class MyWidget(QMainWindow):
             y = '55.702999'
         map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn={s},{s}'
         resp = requests.get(map_req)
-
         if not resp:
-            print(f"Ай-ай-ай {resp.status_code}")
-            sys.exit()
-
-        map_file = 'map.png'
-        with open(map_file, 'wb') as file:
-            file.write(resp.content)
-        self.pixmap = QPixmap(map_file)
-        self.im_map.setPixmap(self.pixmap)
-        os.remove(map_file)
+            self.im_map.setText('По таким координатам невозможно открыть карту')
+        else:
+            map_file = 'map.png'
+            with open(map_file, 'wb') as file:
+                file.write(resp.content)
+            self.pixmap = QPixmap(map_file)
+            self.im_map.setPixmap(self.pixmap)
+            os.remove(map_file)
 
 
 if __name__ == '__main__':
