@@ -12,23 +12,18 @@ class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('map.ui', self)
-        self.nmap()
         self.s = 0.005
-
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Up:
-            if self.s < 0.01:
-                self.s += 0.001
-        if event.key() == Qt.Key_Down:
-            if self.s > 0.001:
-                self.size -= 0.001
-        self.nmap()
+        self.get.clicked.connect(self.nmap)
 
     def nmap(self):
-        x = str(self.x)
-        y = str(self.y)
-        x = 37.530883
-        y = 55.702999
+        x = self.x.text()
+        y = self.y.text()
+        print(x, y)
+        x = str(x)
+        y = str(y)
+        if y == '' or x == '':
+            x = '37.530883'
+            y = '55.702999'
         map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=sat&spn=0.005,0.005'
         print(map_req)
         resp = requests.get(map_req)
