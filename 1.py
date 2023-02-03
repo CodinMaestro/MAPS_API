@@ -13,41 +13,71 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('map.ui', self)
         self.s = 0.005
-        self.get.clicked.connect(self.nmap)
+        self.get.clicked.connect(self.get_c)
+        self.new_2.clicked.connect(self.new_r)
         self.X = 0.004
         self.nx = 1
         self.ny = 1
 
+    def get_c(self):
+        self.x2 = self.x.text()
+        self.y2 = self.y.text()
+        if self.y2 == '' and self.x2 == '':
+            self.x2 = 37.530883
+            self.y2 = 55.702999
+        self.x.setReadOnly(True)
+        self.y.setReadOnly(True)
+        self.nmap()
+
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Left:
+            if self.x2 - self.s > -172.912563:
+                self.x2 -= self.s
+                self.nmap()
         if event.key() == Qt.Key_PageUp:
-            if self.s - self.X > 0.000:
-                self.s -= self.X
+            if self.s / 2 > 0.000:
+                self.s /= 2
                 self.nmap()
         if event.key() == Qt.Key_PageDown:
-            if self.s + self.X < 79.995:
-                self.s += self.X
+            if self.s * 2 < 79.995:
+                self.s *= 2
+                self.nmap()
+        if event.key() == Qt.Key_Up:
+            if self.y2 + self.s < 85.053838:
+                self.y2 += self.s
+                self.nmap()
+        if event.key() == Qt.Key_Down:
+            if self.y2 - self.s > -84.992840:
+                self.y2 -= self.s
+                self.nmap()
+        if event.key() == Qt.Key_Right:
+            if self.x2 + self.s < 172.011028:
+                self.x2 += self.s
                 self.nmap()
 
-    def nmap(self):
-        x = self.x.text()
-        y = self.y.text()
-        x = str(x)
-        y = str(y)
-        s = self.s
-        if y == '' or x == '':
-            x = '37.530883'
-            y = '55.702999'
-        map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn={s},{s}'
-        resp = requests.get(map_req)
-        if not resp:
+    def new_r(self):
+        self.x.setReadOnly(False)
+        self.y.setReadOnly(False)
+        self.im_map.clear()
+
+    def nmap(self, x1=0, y1=0):
+        try:
+            x = str(float(self.x2) + x1)
+            y = str(float(self.y2) + y1)
+            s = self.s
+            map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn={s},{s}'
+            resp = requests.get(map_req)
+            if not resp:
+                self.im_map.setText('По таким координатам невозможно открыть карту')
+            else:
+                map_file = 'map.png'
+                with open(map_file, 'wb') as file:
+                    file.write(resp.content)
+                self.pixmap = QPixmap(map_file)
+                self.im_map.setPixmap(self.pixmap)
+                os.remove(map_file)
+        except Exception:
             self.im_map.setText('По таким координатам невозможно открыть карту')
-        else:
-            map_file = 'map.png'
-            with open(map_file, 'wb') as file:
-                file.write(resp.content)
-            self.pixmap = QPixmap(map_file)
-            self.im_map.setPixmap(self.pixmap)
-            os.remove(map_file)
 
 
 if __name__ == '__main__':
