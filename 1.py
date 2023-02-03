@@ -31,8 +31,8 @@ class MyWidget(QMainWindow):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Left:
-            if self.x2 - self.s > -172.912563:
-                self.x2 -= self.s
+            if float(self.x2) - self.s > -172.912563:
+                self.x2 = float(self.x2) - self.s
                 self.nmap()
         if event.key() == Qt.Key_PageUp:
             if self.s / 2 > 0.000:
@@ -43,16 +43,16 @@ class MyWidget(QMainWindow):
                 self.s *= 2
                 self.nmap()
         if event.key() == Qt.Key_Up:
-            if self.y2 + self.s < 85.053838:
-                self.y2 += self.s
+            if float(self.y2) + self.s < 85.053838:
+                self.y2 = float(self.y2) + self.s
                 self.nmap()
         if event.key() == Qt.Key_Down:
-            if self.y2 - self.s > -84.992840:
-                self.y2 -= self.s
+            if float(self.y2) - self.s > -84.992840:
+                self.y2 = float(self.y2) - self.s
                 self.nmap()
         if event.key() == Qt.Key_Right:
-            if self.x2 + self.s < 172.011028:
-                self.x2 += self.s
+            if float(self.x2) + self.s < 172.011028:
+                self.x2 = float(self.x2) + self.s
                 self.nmap()
 
     def new_r(self):
