@@ -1,14 +1,14 @@
 import sys
 import PyQt5
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 import requests
 import os
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
 
-class MyWidget(QMainWindow):
+class MyWidget(QWidget):
     def __init__(self):
         super().__init__()
         uic.loadUi('map.ui', self)
@@ -30,7 +30,7 @@ class MyWidget(QMainWindow):
         self.nmap()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Left:
+        if event.key() == Qt.Key_A:
             if float(self.x2) - self.s > -172.912563:
                 self.x2 = float(self.x2) - self.s
                 self.nmap()
@@ -42,15 +42,15 @@ class MyWidget(QMainWindow):
             if self.s * 2 < 79.995:
                 self.s *= 2
                 self.nmap()
-        if event.key() == Qt.Key_Up:
+        if event.key() == Qt.Key_W:
             if float(self.y2) + self.s < 85.053838:
                 self.y2 = float(self.y2) + self.s
                 self.nmap()
-        if event.key() == Qt.Key_Down:
+        if event.key() == Qt.Key_S:
             if float(self.y2) - self.s > -84.992840:
                 self.y2 = float(self.y2) - self.s
                 self.nmap()
-        if event.key() == Qt.Key_Right:
+        if event.key() == Qt.Key_D:
             if float(self.x2) + self.s < 172.011028:
                 self.x2 = float(self.x2) + self.s
                 self.nmap()
