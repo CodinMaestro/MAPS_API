@@ -108,6 +108,31 @@
     <string>Сбросить</string>
    </property>
   </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>70</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>схема</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>спутник</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>гибрид</string>
+    </property>
+   </item>
+  </widget>
  </widget>
  <resources/>
  <connections/>
