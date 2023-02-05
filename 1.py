@@ -15,9 +15,19 @@ class MyWidget(QWidget):
         self.s = 0.005
         self.get.clicked.connect(self.get_c)
         self.new_2.clicked.connect(self.new_r)
+        self.comboBox.currentIndexChanged.connect(self.new_view)
+        self.view = 'map'
         self.X = 0.004
         self.nx = 1
         self.ny = 1
+    def new_view(self):
+        if self.comboBox.currentText() == 'схема':
+            self.view = 'map'
+        elif self.comboBox.currentText() == 'спутник':
+            self.view = 'sat'
+        else:
+            self.view = 'sat,skl'
+        self.nmap()
 
     def get_c(self):
         self.x2 = self.x.text()
@@ -65,7 +75,7 @@ class MyWidget(QWidget):
             x = str(float(self.x2) + x1)
             y = str(float(self.y2) + y1)
             s = self.s
-            map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l=map&spn={s},{s}'
+            map_req = f'http://static-maps.yandex.ru/1.x/?ll={x},{y}&l={self.view}&spn={s},{s}'
             resp = requests.get(map_req)
             if not resp:
                 self.im_map.setText('По таким координатам невозможно открыть карту')
