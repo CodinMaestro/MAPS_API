@@ -20,6 +20,7 @@ class MyWidget(QWidget):
         self.X = 0.004
         self.nx = 1
         self.ny = 1
+
     def new_view(self):
         if self.comboBox.currentText() == 'схема':
             self.view = 'map'
@@ -28,6 +29,7 @@ class MyWidget(QWidget):
         else:
             self.view = 'sat,skl'
         self.nmap()
+        self.window().setFocus()
 
     def get_c(self):
         self.x2 = self.x.text()
@@ -38,9 +40,10 @@ class MyWidget(QWidget):
         self.x.setReadOnly(True)
         self.y.setReadOnly(True)
         self.nmap()
+        self.window().setFocus()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_A:
+        if event.key() == Qt.Key_Left:
             if float(self.x2) - self.s > -172.912563:
                 self.x2 = float(self.x2) - self.s
                 self.nmap()
@@ -52,15 +55,15 @@ class MyWidget(QWidget):
             if self.s * 2 < 79.995:
                 self.s *= 2
                 self.nmap()
-        if event.key() == Qt.Key_W:
+        if event.key() == Qt.Key_Up:
             if float(self.y2) + self.s < 85.053838:
                 self.y2 = float(self.y2) + self.s
                 self.nmap()
-        if event.key() == Qt.Key_S:
+        if event.key() == Qt.Key_Down:
             if float(self.y2) - self.s > -84.992840:
                 self.y2 = float(self.y2) - self.s
                 self.nmap()
-        if event.key() == Qt.Key_D:
+        if event.key() == Qt.Key_Right:
             if float(self.x2) + self.s < 172.011028:
                 self.x2 = float(self.x2) + self.s
                 self.nmap()
